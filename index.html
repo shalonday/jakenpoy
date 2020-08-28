@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+    <script>
+        function computerPlay(){ //randomly return "Rock" "Paper" or "Scissors"
+            let num = Math.floor(Math.random()*3);
+            return (num == 0) ? "rock" :
+                (num == 1) ? "paper" : "scissors";
+
+    }
+
+        function playRound(playerSelection, computerSelection){ //may be a -win, -tie, -lose.
+            
+        if (playerSelection == computerSelection){
+            return `A tie! Both played ${playerSelection}!`;
+        } else if (playerSelection == "rock" && computerSelection == "scissors" || playerSelection == "scissors" && computerSelection == "paper" || playerSelection == "paper" && computerSelection == "rock"){
+            return `A win for you, ${playerSelection} beats ${computerSelection}!`;
+        } else if (computerSelection == "rock" && playerSelection == "scissors" || computerSelection == "scissors" && playerSelection == "paper" || computerSelection == "paper" && playerSelection == "rock"){
+            return `A loss for you, ${computerSelection} beats ${playerSelection}!`;
+        } else {
+            return 'Something went horribly wrong.';
+        }
+    }
+
+        function isSupported(playerSelection){
+            while (!(playerSelection == "rock" || playerSelection == "paper" || playerSelection == "scissors")){
+                playerSelection = prompt("Make sure to enter rock, paper, or scissors (with an S!).");
+                playerSelection = playerSelection.toLowerCase();
+            }
+            return playerSelection;
+        }
+
+        function game(){ //play 5 rounds, print score after each round, then report winner.
+            for (let i = 0; i < 5; i++){
+
+                playerSelection = prompt("Jak en poy hale hale hoy, sino'ng matalo siya'ng unggoy!\n(rock, paper, or scissors?)");
+                playerSelection = playerSelection.toLowerCase();
+
+                //check if player entered supported answer
+                playerSelection = isSupported(playerSelection);
+
+                computerSelection = computerPlay();
+                roundResult = playRound(playerSelection, computerSelection) //save each round result in a variable to be assessed and counted
+                
+                //update the scores. check the 3rd letter of each returned string. t == tie, w==win, l==lose. t doesn't update any score.
+                if(roundResult[2]=="w"){
+                    playerScore++;
+                }else if (roundResult[2] == "l"){
+                    computerScore++;
+                }
+                //print round result and current total scores
+                alert("Round#" + (i + 1) + " " + roundResult + "\nPlayer Score: " + playerScore + " Computer Score: " + computerScore);
+            }
+            //after 5 rounds, return string indicating winner, loser, or tie.
+            return (playerScore > computerScore) ? "You win!" :
+                (playerScore < computerScore) ? "You lose!" : "It's a tie!";
+    }
+
+        let playerSelection;
+        let computerSelection;
+        let roundResult;
+        let computerScore = 0;
+        let playerScore = 0;
+        alert(game());    
+    
+    </script>
+</body>
+</html>
