@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Grandstander&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Jak En Poy,<br> hale hale hoy,<br> sino'ng matalo<br> siya'ng unggoy!</h1>
+    <br>
+    <div id="buttons">
+        <button id="rockButton"><i class="fa fa-hand-rock-o"></i></button>
+        <button id="paperButton"><i class="fa fa-hand-paper-o"></i></button>
+        <button id="scissorsButton"><i class="fa fa-hand-scissors-o"></i></button>
+    </div>
+    <div id="results"></div>
+    <h1 id="winner"></h1>
+    <footer><span>Background based on photo by <a href="https://unsplash.com/@chuklanov?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Avel Chuklanov</a> on <a href="https://unsplash.com/collections/12255917/used?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span></footer>
+    <script>
+
+        function computerPlay() { //randomly return "Rock" "Paper" or "Scissors"
+            let num = Math.floor(Math.random() * 3);
+
+            alert((num == 0) ? "Computer played Rock!" :
+                (num == 1) ? "Computer played Paper!" : "Computer played Scissors!");
+
+            return (num == 0) ? "rock" :
+                (num == 1) ? "paper" : "scissors";
+
+        }
+
+        function playRound(e) { //may be a -win, -tie, -lose.
+
+            if (playerScore == 5 || computerScore == 5) {
+                restartGame();
+            } else {
+                
+                if (e.target === rockButton || e.target === rockIcon)
+                    playerSelection = "rock";
+                else if (e.target === paperButton || e.target === paperIcon)
+                    playerSelection = "paper";
+                else if (e.target === scissorsButton || e.target === scissorsIcon)
+                    playerSelection = "scissors";
+
+                computerSelection = computerPlay();
+
+                if (playerSelection == computerSelection) {
+                    updateScore(`A tie! Both played ${playerSelection}! No one gets a point.`);
+                } else if (playerSelection == "rock" && computerSelection == "scissors" || playerSelection == "scissors" && computerSelection == "paper" || playerSelection == "paper" && computerSelection == "rock") {
+                    updateScore(`A win for you, ${playerSelection} beats ${computerSelection}!`);
+                } else if (computerSelection == "rock" && playerSelection == "scissors" || computerSelection == "scissors" && playerSelection == "paper" || computerSelection == "paper" && playerSelection == "rock") {
+                    updateScore(`A loss for you, ${computerSelection} beats ${playerSelection}!`);
+                } else {
+                    updateScore('Something went horribly wrong.');
+                }
+            }
+        }
+
+        function updateScore(roundResult) {
+
+            if (roundResult[2] == "w") {
+                playerScore++;
+            } else if (roundResult[2] == "l") {
+                computerScore++;
+            }
+
+            roundNumber++;
+
+
+            //print round result and current total scores
+            div.textContent = "Round#" + roundNumber + ": " + roundResult + "\nPlayer Score: " + playerScore + " Computer Score: " + computerScore;
+
+            //best of 5. present the winner.
+            if (playerScore == 5 && computerScore < 5) {
+                winner.textContent = "You Win! Press any button to restart, then press again to play.";
+            } else if (computerScore == 5 && playerScore < 5) {
+                winner.textContent = "You Lose! Game Over. Press any button to restart, then press again to play."
+            }
+
+        }
+
+        function restartGame() {
+            playerScore = 0;
+            computerScore = 0;
+            div.textContent = "";
+            winner.textContent = "";
+            roundNumber = 0;
+        }
+
+        const rockButton = document.querySelector("#rockButton");
+        const rockIcon = document.querySelector("i.fa-hand-rock-o");
+
+        const paperButton = document.querySelector("#paperButton");
+        const paperIcon = document.querySelector("i.fa-hand-paper-o");
+
+        const scissorsButton = document.querySelector("#scissorsButton");
+        const scissorsIcon = document.querySelector("i.fa-hand-scissors-o");
+
+        const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => button.addEventListener('click', playRound));
+
+        const div = document.querySelector("div#results");
+        const winner = document.querySelector("h1#winner");
+
+        let playerSelection;
+        let computerSelection;
+        let roundNumber = 0;
+        let roundResult;
+        let computerScore = 0;
+        let playerScore = 0;
+    </script>
+</body>
+
+</html>
